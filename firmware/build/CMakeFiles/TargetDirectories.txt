@@ -1,0 +1,3 @@
+/Users/athens/vscode101/memfault-demo/firmware/build/CMakeFiles/app.elf.dir
+/Users/athens/vscode101/memfault-demo/firmware/build/CMakeFiles/edit_cache.dir
+/Users/athens/vscode101/memfault-demo/firmware/build/CMakeFiles/rebuild_cache.dir

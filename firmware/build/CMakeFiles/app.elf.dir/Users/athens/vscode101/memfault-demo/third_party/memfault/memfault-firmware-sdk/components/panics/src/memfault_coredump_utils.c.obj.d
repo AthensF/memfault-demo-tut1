@@ -1,0 +1,31 @@
+CMakeFiles/app.elf.dir/Users/athens/vscode101/memfault-demo/third_party/memfault/memfault-firmware-sdk/components/panics/src/memfault_coredump_utils.c.obj: \
+ /Users/athens/vscode101/memfault-demo/third_party/memfault/memfault-firmware-sdk/components/panics/src/memfault_coredump_utils.c \
+ /Users/athens/vscode101/memfault-demo/firmware/../third_party/memfault/memfault-firmware-sdk/components/include/memfault/core/debug_log.h \
+ /Users/athens/vscode101/memfault-demo/firmware/../third_party/memfault/memfault-firmware-sdk/components/include/memfault/config.h \
+ /Users/athens/vscode101/memfault-demo/firmware/app/memfault_platform_config.h \
+ /Users/athens/vscode101/memfault-demo/firmware/../third_party/memfault/memfault-firmware-sdk/components/include/memfault/default_config.h \
+ /Users/athens/vscode101/memfault-demo/firmware/../third_party/memfault/memfault-firmware-sdk/components/include/memfault/core/log.h \
+ /Applications/ArmGNUToolchain/14.2.rel1/arm-none-eabi/lib/gcc/arm-none-eabi/14.2.1/include/stdarg.h \
+ /Applications/ArmGNUToolchain/14.2.rel1/arm-none-eabi/lib/gcc/arm-none-eabi/14.2.1/include/stdbool.h \
+ /Applications/ArmGNUToolchain/14.2.rel1/arm-none-eabi/lib/gcc/arm-none-eabi/14.2.1/include/stddef.h \
+ /Applications/ArmGNUToolchain/14.2.rel1/arm-none-eabi/lib/gcc/arm-none-eabi/14.2.1/include/stdint.h \
+ /Applications/ArmGNUToolchain/14.2.rel1/arm-none-eabi/arm-none-eabi/include/stdint.h \
+ /Applications/ArmGNUToolchain/14.2.rel1/arm-none-eabi/arm-none-eabi/include/machine/_default_types.h \
+ /Applications/ArmGNUToolchain/14.2.rel1/arm-none-eabi/arm-none-eabi/include/sys/features.h \
+ /Applications/ArmGNUToolchain/14.2.rel1/arm-none-eabi/arm-none-eabi/include/_newlib_version.h \
+ /Applications/ArmGNUToolchain/14.2.rel1/arm-none-eabi/arm-none-eabi/include/sys/_intsup.h \
+ /Applications/ArmGNUToolchain/14.2.rel1/arm-none-eabi/arm-none-eabi/include/sys/_stdint.h \
+ /Users/athens/vscode101/memfault-demo/firmware/../third_party/memfault/memfault-firmware-sdk/components/include/memfault/core/compact_log_compile_time_checks.h \
+ /Users/athens/vscode101/memfault-demo/firmware/../third_party/memfault/memfault-firmware-sdk/components/include/memfault/core/compact_log_helpers.h \
+ /Users/athens/vscode101/memfault-demo/firmware/../third_party/memfault/memfault-firmware-sdk/components/include/memfault/core/compiler.h \
+ /Users/athens/vscode101/memfault-demo/firmware/../third_party/memfault/memfault-firmware-sdk/components/include/memfault/core/compiler_gcc.h \
+ /Users/athens/vscode101/memfault-demo/firmware/../third_party/memfault/memfault-firmware-sdk/components/include/memfault/core/platform/debug_log.h \
+ /Users/athens/vscode101/memfault-demo/firmware/../third_party/memfault/memfault-firmware-sdk/components/include/memfault/panics/coredump.h \
+ /Applications/ArmGNUToolchain/14.2.rel1/arm-none-eabi/arm-none-eabi/include/inttypes.h \
+ /Applications/ArmGNUToolchain/14.2.rel1/arm-none-eabi/arm-none-eabi/include/newlib.h \
+ /Applications/ArmGNUToolchain/14.2.rel1/arm-none-eabi/arm-none-eabi/include/sys/config.h \
+ /Applications/ArmGNUToolchain/14.2.rel1/arm-none-eabi/arm-none-eabi/include/machine/ieeefp.h \
+ /Applications/ArmGNUToolchain/14.2.rel1/arm-none-eabi/arm-none-eabi/include/_ansi.h \
+ /Applications/ArmGNUToolchain/14.2.rel1/arm-none-eabi/arm-none-eabi/include/sys/_locale.h \
+ /Users/athens/vscode101/memfault-demo/firmware/../third_party/memfault/memfault-firmware-sdk/components/include/memfault/core/reboot_reason_types.h \
+ /Users/athens/vscode101/memfault-demo/firmware/../third_party/memfault/memfault-firmware-sdk/components/include/memfault/panics/platform/coredump.h

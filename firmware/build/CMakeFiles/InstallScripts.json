@@ -1,0 +1,7 @@
+{
+	"InstallScripts" : 
+	[
+		"/Users/athens/vscode101/memfault-demo/firmware/build/cmake_install.cmake"
+	],
+	"Parallel" : false
+}
