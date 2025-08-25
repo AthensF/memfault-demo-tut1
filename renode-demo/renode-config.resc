@@ -1,7 +1,12 @@
+:run in root memfault-demo folder
+:name: STM32F4 Discovery Printf
+:description: This script runs the usart_printf example on stm32f4 discovery
+
+$name?="STM32F4_Discovery"
 $bin?=@renode-demo/renode-example.elf
 
 #Create Machine and Load configs
-mach create
+mach create $name
 machine LoadPlatformDescription @renode/platforms/boards/stm32f4_discovery-kit.repl
 machine LoadPlatformDescription @renode-demo/add-ccm.repl
 
