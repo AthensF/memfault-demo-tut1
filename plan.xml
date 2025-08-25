@@ -1,0 +1,187 @@
+<demo id="renode-gdb-integration" version="1.0">
+  <title>Renode GDB Integration Demo</title>
+  <objective>
+    Enable source-level debugging of a Cortex-M/RISC-V firmware in Renode by exposing a GDB remote target and connecting with arm-none-eabi-gdb (or riscv-none-elf-gdb).
+  </objective>
+
+  <prerequisites>
+    <os>macOS</os>
+    <tools>
+      <tool name="Renode" installHint="brew install --cask renode OR use bundled renode project in workspace"/>
+      <tool name="GDB" variant="arm-none-eabi-gdb" installHint="brew install --cask gcc-arm-embedded or via toolchain of choice"/>
+    </tools>
+    <artifacts>
+      <firmware type="ELF" pathHint="/absolute/path/to/firmware.elf"/>
+      <platformScript optional="true" pathHint="/absolute/path/to/platform.resc"/>
+    </artifacts>
+  </prerequisites>
+
+  <environments>
+    <environment id="native" default="true">
+      <description>Run Renode locally, launch GDB from host.</description>
+    </environment>
+    <environment id="docker">
+      <description>Run Renode in a container; expose GDB port to host.</description>
+      <note>Ensure port mappings for the GDB server (e.g., 3333:3333).</note>
+    </environment>
+  </environments>
+
+  <references>
+    <file hint="GDB server syntax (validated in workspace)">renode/scripts/single-node/polarfire-soc.resc</file>
+    <file hint="Multi-CPU example with GDB toggles">renode/scripts/multi-node/efr32xg24-twonode_demo.resc</file>
+  </references>
+
+  <plan>
+    <step id="1" title="Select environment">
+      <action>Choose native or docker environment based on your constraints.</action>
+      <successCriteria>Decision recorded.</successCriteria>
+    </step>
+
+    <step id="2" title="Verify tooling">
+      <commands>
+        <![CDATA[
+renode --version
+arm-none-eabi-gdb --version
+        ]]>
+      </commands>
+      <successCriteria>Both commands return versions without error.</successCriteria>
+    </step>
+
+    <step id="3" title="Prepare firmware and platform">
+      <options>
+        <option id="3a" title="Use an existing .resc script">
+          <action>Open an existing platform script and enable GDB server lines (uncomment):</action>
+          <snippet origin="renode/scripts/single-node/polarfire-soc.resc">
+            <![CDATA[
+# machine StartGdbServer 3333 true
+            ]]>
+          </snippet>
+          <note>
+            In multi-CPU cases you can target a specific CPU:
+          </note>
+          <snippet origin="renode/scripts/multi-node/efr32xg24-twonode_demo.resc">
+            <![CDATA[
+# machine StartGdbServer 3333 false cpu
+# machine StartGdbServer 3333 false seqcpu
+            ]]>
+          </snippet>
+        </option>
+        <option id="3b" title="Interactive setup (no .resc)">
+          <action>In Renode monitor, create machine, load platform and ELF manually.</action>
+          <monitorCommands>
+            <![CDATA[
+# Example sketch (adjust for your SoC/peripherals):
+mach create
+# Load a platform (can be a .repl or .resc defining CPUs/peripherals)
+i @/absolute/path/to/platform.repl
+# Load your firmware
+sysbus LoadELF @/absolute/path/to/firmware.elf
+            ]]>
+          </monitorCommands>
+        </option>
+      </options>
+      <successCriteria>Renode has a machine with CPU and your ELF loaded.</successCriteria>
+    </step>
+
+    <step id="4" title="Start the GDB server in Renode">
+      <monitorCommands>
+        <![CDATA[
+# Generic (port 3333). The third argument is behaviour-specific (e.g., blocking/attach); use what your script/example expects.
+machine StartGdbServer 3333 true
+        ]]>
+      </monitorCommands>
+      <notes>
+        <note>If multiple CPUs exist, specify the CPU by name: machine StartGdbServer 3333 false cpu</note>
+        <note>Keep Renode running; this exposes a GDB remote target on localhost:3333.</note>
+      </notes>
+      <successCriteria>Renode indicates GDB server is listening on the chosen port.</successCriteria>
+    </step>
+
+    <step id="5" title="Connect GDB and load symbols">
+      <commands>
+        <![CDATA[
+arm-none-eabi-gdb /absolute/path/to/firmware.elf
+(gdb) target remote localhost:3333
+# Optional quality-of-life:
+(gdb) set print pretty on
+(gdb) set pagination off
+        ]]>
+      </commands>
+      <successCriteria>GDB shows connection established; symbols loaded.</successCriteria>
+    </step>
+
+    <step id="6" title="Debug workflow">
+      <gdbSequence>
+        <![CDATA[
+# Typical Cortex-M reset/halt sequence if needed:
+(gdb) monitor reset
+(gdb) monitor halt
+# Set breakpoints and run:
+(gdb) break main
+(gdb) continue
+# Step/inspect:
+(gdb) next
+(gdb) step
+(gdb) info registers
+(gdb) x/10i $pc
+        ]]>
+      </gdbSequence>
+      <successCriteria>Breakpoint at main hits; stepping works; registers/instructions readable.</successCriteria>
+    </step>
+
+    <step id="7" title="Verify UART/output">
+      <actions>
+        <action>Open Renode analyzers (UART/console) for logs.</action>
+      </actions>
+      <monitorCommands>
+        <![CDATA[
+showAnalyzer sysbus.uart0
+# or device-specific: showAnalyzer eusart0
+        ]]>
+      </monitorCommands>
+      <successCriteria>Expected prints/logs appear; no unexpected resets.</successCriteria>
+    </step>
+
+    <step id="8" title="Troubleshooting">
+      <cases>
+        <case issue="GDB cannot connect">
+          <check>Is the port correct (3333)? Any firewall? Is Renode running?</check>
+        </case>
+        <case issue="Wrong CPU context">
+          <check>Use CPU-qualified: machine StartGdbServer 3333 false cpuName</check>
+        </case>
+        <case issue="Symbols not matching">
+          <check>Confirm the same ELF used by both Renode and GDB; rebuild without -s/stripping.</check>
+        </case>
+      </cases>
+    </step>
+
+    <step id="9" title="Clean up">
+      <actions>
+        <action>Quit GDB: (gdb) detach; (gdb) quit</action>
+        <action>Stop Renode: monitor 'q' or Ctrl+C in console</action>
+      </actions>
+      <successCriteria>Ports closed; processes terminated.</successCriteria>
+    </step>
+  </plan>
+
+  <dockerVariant optional="true">
+    <hint>Map port 3333 and mount firmware/platform paths.</hint>
+    <commands>
+      <![CDATA[
+docker run --rm -it -p 3333:3333 -v /abs/firmware:/fw -v /abs/platforms:/plat renodeimage renode
+# inside Renode:
+machine StartGdbServer 3333 true
+# on host:
+arm-none-eabi-gdb /abs/firmware/firmware.elf
+(gdb) target remote localhost:3333
+      ]]>
+    </commands>
+  </dockerVariant>
+
+  <successCriteria>
+    <item>GDB attaches to Renode’s GDB server.</item>
+    <item>Breakpoints hit; stepping/inspection works.</item>
+    <item>Peripheral/UART output visible in analyzers.</item>
+  </successCriteria>
+</demo>

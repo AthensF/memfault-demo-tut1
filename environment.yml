@@ -1,0 +1,13 @@
+name: memfault-multi-arch-gdb
+channels:
+  - memfault
+  - conda-forge
+  # disable default channels to make sure we only use the channels above
+  - nodefaults
+dependencies:
+  - multi-arch-gdb=12.1=py310*
+  - python=3.10
+
+
+# GDB
+  # https://docs.memfault.com/docs/mcu/coredump-elf-with-gdb#multi-architecture-gdb-using-docker

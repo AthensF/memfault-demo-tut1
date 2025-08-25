@@ -1,0 +1,19 @@
+$bin?=@renode-demo/renode-example.elf
+
+#Create Machine and Load configs
+mach create
+machine LoadPlatformDescription @renode/platforms/boards/stm32f4_discovery-kit.repl
+machine LoadPlatformDescription @renode-demo/add-ccm.repl
+
+#create a terminal window showing output of UART2, note its usart2, not uart2
+showAnalyzer sysbus.usart2
+
+# Enable GDB
+machine StartGdbServer 3333
+
+macro reset
+"""
+    sysbus LoadELF $bin
+"""
+
+runMacro $reset
