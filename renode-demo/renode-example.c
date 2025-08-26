@@ -4,6 +4,7 @@
 #include <libopencm3/stm32/rcc.h>
 #include <libopencm3/stm32/gpio.h>
 #include <libopencm3/stm32/usart.h>
+#include "memfault/components.h"
 
 /* Forward declarations */
 int _write(int file, char *ptr, int len);
@@ -76,7 +77,10 @@ int main(void) {
     usart_setup();
     button_setup();
 
-    printf("hello world!\n");
+    // Initialize Memfault SDK (events, metrics, reboot tracking, etc.)
+    memfault_platform_boot();
+
+    printf("hullo world!\n");
     bool button_is_pressed = false;
 
     while (1) {
@@ -84,6 +88,7 @@ int main(void) {
             button_is_pressed = true;
         } else if (button_is_pressed && !gpio_get(GPIOA, GPIO0)) {
             printf("button pressed\n");
+            memfault_data_export_dump_chunks(); // problem line
             button_is_pressed = false;
         }
     }

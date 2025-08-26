@@ -22,6 +22,8 @@
 //! TODO: Fill in FIXMEs below for your platform
 
 #include <stdbool.h>
+#include <stdarg.h>
+#include <stdio.h>
 
 #include "memfault/components.h"
 #include "memfault/ports/reboot_reason.h"
@@ -132,16 +134,19 @@ MEMFAULT_WEAK uint64_t memfault_platform_get_time_since_boot_ms(void) {
 
 MEMFAULT_PRINTF_LIKE_FUNC(2, 3) void memfault_platform_log(eMemfaultPlatformLogLevel level,
                                                            const char *fmt, ...) {
-  //! !FIXME: Use this function to send logs to your application logging component, serial console,
-  //! etc
-  (void)level;
-  (void)fmt;
+  (void)level; // Map levels to your logger if desired
+  va_list args;
+  va_start(args, fmt);
+  vprintf(fmt, args);
+  va_end(args);
+  printf("\n");
 }
 
 MEMFAULT_PRINTF_LIKE_FUNC(1, 2) void memfault_platform_log_raw(const char *fmt, ...) {
-  //! !FIXME: Use this function to send logs to your application logging component, serial console,
-  //! etc
-  (void)fmt;
+  va_list args;
+  va_start(args, fmt);
+  vprintf(fmt, args);
+  va_end(args);
 }
 
 //! !FIXME: This function _must_ be called by your main() routine prior
